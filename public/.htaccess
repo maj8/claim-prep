@@ -1,0 +1,7 @@
+# For Apache web servers (e.g. Hostinger / merra.org): correct file types and no caching of the app shell.
+AddType text/javascript .mjs
+AddType application/manifest+json .webmanifest
+AddType application/wasm .wasm
+<FilesMatch "^(index\.html|sw\.js|manifest\.webmanifest)$">
+  Header set Cache-Control "no-cache"
+</FilesMatch>

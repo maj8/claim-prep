@@ -1,0 +1,33 @@
+{
+  "name": "claim-prep",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "tsx --test test/*.test.ts"
+  },
+  "dependencies": {
+    "idb-keyval": "^6.3.0",
+    "jszip": "^3.10.2",
+    "pdfjs-dist": "^4.10.38",
+    "preact": "^11.1.0",
+    "tesseract.js": "^5.1.1",
+    "workbox-precaching": "^7.4.1",
+    "workbox-routing": "^7.4.1",
+    "workbox-strategies": "^7.4.1"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.6",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@types/node": "^26.6.5",
+    "playwright": "1.56",
+    "sharp": "^0.35.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^5.4.21",
+    "vite-plugin-pwa": "^2.0.0"
+  }
+}
