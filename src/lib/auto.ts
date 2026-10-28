@@ -74,7 +74,8 @@ export function autofill(r: Receipt, text: string, setup: Setup, today = new Dat
   // Who paid: the card's last four digits, or cash.
   if (!out.paidBy) {
     const last4 = setup.profile.cardLast4;
-    if (p.paidCash) { out.paidBy = 'me'; say('Paid in cash, so marked to be paid back to you.'); }
+    if (!last4) out.paidBy = 'me';   // no university card: everything is paid back to you
+    else if (p.paidCash) { out.paidBy = 'me'; say('Paid in cash, so marked to be paid back to you.'); }
     else if (p.cardLast4 && last4 && p.cardLast4 !== last4) { out.paidBy = 'me'; say(`Paid with a card ending ${p.cardLast4}, not your university card, so marked to be paid back to you.`); }
     else { out.paidBy = 'card'; if (p.cardLast4 && p.cardLast4 === last4) say(`Your university card ending ${last4} is on the receipt.`); }
   }

@@ -129,3 +129,15 @@ test('reports never mix project and non-project items; coding sheet has a row ea
   assert.equal(csv.length, 3);
   assert.match(csv[1], /10-10019-431406-MJAMESYY-NDRI-9999999/);
 });
+
+test('no university card: receipts are claimed back to you, and card-only types are flagged', async () => {
+  const { cardOnlyWarning } = await import('../src/lib/model');
+  const s = setup(); s.profile.cardLast4 = '';
+  const meal = autofill(blankReceipt('m.jpg', 'image/jpeg', 'image'), MEAL.replace('TARJETA **** 4536', ''), s, TODAY);
+  assert.equal(meal.paidBy, 'me');
+  assert.equal(cardOnlyWarning(meal, s), '');
+  const cloud = autofill(blankReceipt('h.pdf', 'application/pdf', 'pdf'), 'Hetzner Online GmbH\nDate 11/10/2026\nCloud server\nTotal EUR 78.77', s, TODAY);
+  assert.equal(cloud.paidBy, 'me');
+  assert.match(cardOnlyWarning(cloud, s), /only accepts/);
+  assert.equal(buildEmail(meal, s).body.includes('Paid by: Me: to be reimbursed'), true);
+});

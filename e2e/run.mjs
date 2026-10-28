@@ -18,7 +18,7 @@ await page.goto(BASE);
 await page.getByRole('button', { name: 'Set up' }).click();
 await page.getByLabel('Your name').fill('Test Person');
 await page.getByLabel('University email').fill('tp@st-andrews.ac.uk');
-await page.getByLabel('Last 4 digits of your university card').fill('4536');
+await page.getByLabel(/Last 4 digits of your university card/).fill('4536');
 await shot('01-about-you');
 await page.getByRole('button', { name: 'Next' }).click();
 await page.getByRole('button', { name: 'Add an account' }).click();

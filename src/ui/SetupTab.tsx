@@ -13,9 +13,9 @@ export function ProfileForm({ s, onChange }: { s: Setup; onChange: (s: Setup) =>
     <>
       <Text label="Your name" value={p.name} onInput={v => set({ name: v })} />
       <Text label="University email" type="email" value={p.email} onInput={v => set({ email: v })} hint="Oracle only accepts receipts sent from this address." />
-      <Text label="Last 4 digits of your university card" value={p.cardLast4} inputMode="numeric" maxLength={4}
+      <Text label="Last 4 digits of your university card (if you have one)" value={p.cardLast4} inputMode="numeric" maxLength={4}
         onInput={v => set({ cardLast4: v.replace(/\D/g, '').slice(0, 4) })}
-        hint="Only the last four digits: enough to tell your university card from your own. The full number is never needed or kept." />
+        hint="Only the last four digits: enough to tell your university card from your own. The full number is never needed or kept. No university card? Leave this blank and every receipt is claimed back to you." />
       <Select label="Home currency" value={p.homeCurrency} options={CURRENCIES.map(c => ({ value: c, label: c }))} onChange={v => set({ homeCurrency: v || 'GBP' })} />
     </>
   );

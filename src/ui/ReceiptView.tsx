@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import type { Api } from '../app';
 import type { PaidBy, Receipt, Setup } from '../lib/model';
-import { MEALS, missing, MISSING_LABEL, newId, status } from '../lib/model';
+import { MEALS, cardOnlyWarning, missing, MISSING_LABEL, newId, status } from '../lib/model';
 import { amountsIn } from '../lib/parse';
 import { oracleFields } from '../lib/oracle';
 import { supplierKey } from '../lib/auto';
@@ -73,8 +73,11 @@ export default function ReceiptView({ api, r, onBack }: { api: Api; r: Receipt; 
           <Select label="Trip" value={r.tripId} options={s.trips.map(t => ({ value: t.id, label: t.name }))} placeholder="Not part of a trip"
             onChange={v => { const t = s.trips.find(x => x.id === v); set({ tripId: v, ...(t ? { reason: t.name, ...(t.charge ? { charge: t.charge } : {}) } : {}) }); }} />
         )}
-        <Seg label="Paid by" value={r.paidBy} need={need('paidBy')} onChange={v => set({ paidBy: v as PaidBy })}
-          options={[{ value: 'card', label: `University card${s.profile.cardLast4 ? ' ·' + s.profile.cardLast4 : ''}` }, { value: 'me', label: 'Me: pay me back' }]} />
+        {s.profile.cardLast4
+          ? <Seg label="Paid by" value={r.paidBy} need={need('paidBy')} onChange={v => set({ paidBy: v as PaidBy })}
+              options={[{ value: 'card', label: `University card ·${s.profile.cardLast4}` }, { value: 'me', label: 'Me: pay me back' }]} />
+          : r.paidBy !== 'me' && <button onClick={() => set({ paidBy: 'me' })}>Mark as paid by me</button>}
+        {cardOnlyWarning(r, s) && <div class="warn">{cardOnlyWarning(r, s)}</div>}
         <Text label="Supplier" value={r.merchant} need={need('merchant')} onInput={v => set({ merchant: v })} />
         <div class="two">
           <Text label="Date" type="date" value={r.date} need={need('date')} onInput={v => set({ date: v })} />

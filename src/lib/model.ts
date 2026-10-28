@@ -224,6 +224,13 @@ export function missing(r: Receipt, setup: Setup): Missing[] {
   return q;
 }
 
+/** Oracle's "(Credit Card only)" types cannot be paid back to you: say so, and what to do instead. */
+export function cardOnlyWarning(r: Receipt, setup: Setup): string {
+  const cat = setup.categories.find(c => c.id === r.categoryId);
+  if (r.paidBy !== 'me' || !cat || !/credit card only/i.test(cat.expenseType)) return '';
+  return `Oracle only accepts “${cat.expenseType}” for university card payments. If you paid yourself, check with your finance contact how to claim it; goods and services are normally bought through the University's purchasing instead.`;
+}
+
 export type Status = 'check' | 'ready' | 'sent';
 export function status(r: Receipt, setup: Setup): Status {
   if (r.status === 'sent') return 'sent';
