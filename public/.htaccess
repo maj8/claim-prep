@@ -1,7 +1,10 @@
-# For Apache web servers (e.g. Hostinger / merra.org): correct file types and no caching of the app shell.
+# For Apache / LiteSpeed web servers (e.g. Hostinger / merra.org): correct file types, and always fetch the
+# newest app shell so updates reach people.
 AddType text/javascript .mjs
 AddType application/manifest+json .webmanifest
 AddType application/wasm .wasm
-<FilesMatch "^(index\.html|sw\.js|manifest\.webmanifest)$">
-  Header set Cache-Control "no-cache"
-</FilesMatch>
+<IfModule mod_headers.c>
+  <FilesMatch "^(index\.html|sw\.js|manifest\.webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
